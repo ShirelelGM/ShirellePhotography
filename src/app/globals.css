@@ -20,7 +20,6 @@
 
 html {
   height: 100%;
-  scroll-behavior: smooth;
 }
 
 html,
@@ -55,6 +54,11 @@ button {
 img {
   max-width: 100%;
   height: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  -webkit-touch-callout: none;
 }
 
 /* ── Navigation ──────────────────────────────── */
@@ -306,18 +310,13 @@ img {
 }
 
 .prints-image-container {
-  position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
   background: var(--color-surface);
   overflow: hidden;
   cursor: pointer;
 }
 
 .prints-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   transition: transform 0.6s ease;
 }
 
@@ -331,8 +330,17 @@ img {
   gap: 6px;
 }
 
-.prints-series-item {
+.prints-series .prints-image-container {
   aspect-ratio: 3 / 4;
+  position: relative;
+}
+
+.prints-series .prints-image-container img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .prints-meta {

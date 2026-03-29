@@ -84,14 +84,14 @@ export default function PrintsPage() {
               {print.images.map((img, i) => (
                 <div
                   key={i}
-                  className="prints-image-container prints-series-item"
+                  className="prints-image-container"
                   onClick={() => setLightboxSrc(img)}
                 >
                   <Image
                     src={img}
                     alt={`${print.title} — ${i + 1}`}
                     fill
-                    sizes="(max-width: 768px) 100vw, 380px"
+                    sizes="(max-width: 768px) 50vw, 380px"
                     style={{ objectFit: "cover" }}
                   />
                 </div>
@@ -105,9 +105,11 @@ export default function PrintsPage() {
               <Image
                 src={print.images[0]}
                 alt={print.title}
-                fill
+                width={1200}
+                height={900}
                 sizes="(max-width: 768px) 100vw, 780px"
-                style={{ objectFit: "cover" }}
+                priority={currentIndex === 0}
+                style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>
           )}

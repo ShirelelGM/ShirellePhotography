@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation";
+import { ImageProtection } from "@/components/ImageProtection";
 
 export const metadata: Metadata = {
   title: "Shirelle Ganon Moragrega | Photography",
@@ -13,8 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
+        <ImageProtection />
         <Navigation />
         {children}
       </body>
