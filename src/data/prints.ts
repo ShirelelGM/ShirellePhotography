@@ -59,7 +59,7 @@ export const prints: Print[] = [
     id: "7",
     title: "The Weight of Many",
     description:
-      "Available in 60 x 90 cm, this piece is printed on acrylic",
+      "Available in 60 x 90 cm, this piece is printed on wood without glass",
     price: "Inquire for price",
     images: ["/images/prints/Photo8.jpg"],
   },

@@ -21,8 +21,7 @@ export default function Home() {
           There is a quiet nostalgia in the most fleeting things: a sunset
           dissolving into night, the wind moving across your face,
           bioluminescence flickering in the vastness of the ocean. The most
-          beautiful moments in life never last, and no matter how deeply we
-          feel them, we cannot keep them. Through my lens, I try to preserve a
+          beautiful moments in life never last. Through my lens, I try to preserve a
           fragment of that beauty, not only what the world looked like, but
           what it felt like to stand inside it.
         </p>

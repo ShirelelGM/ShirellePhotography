@@ -2,9 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { prints } from "@/data/prints";
-import { ProgressiveImage } from "@/components/ProgressiveImage";
+import {
+  getOptimizedImageUrl,
+  ProgressiveImage,
+} from "@/components/ProgressiveImage";
 import { InquiryModal } from "@/components/InquiryModal";
 import { Lightbox } from "@/components/Lightbox";
+
+const THUMBNAIL_QUALITY = 55;
+const VIEWER_QUALITY = 72;
+const BLUR_PRELOAD_WIDTH = 32;
+const GRID_PRELOAD_WIDTH = 384;
+const VIEWER_PRELOAD_WIDTH = 1200;
 
 export default function PrintsPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,21 +26,32 @@ export default function PrintsPage() {
   const isSeries = print.images.length > 1;
 
   useEffect(() => {
-    const lowQualityWidth = 32;
-    const lowQuality = 20;
-    const nearbyPrints = [
-      print,
-      prints[(currentIndex + 1) % total],
-      prints[(currentIndex - 1 + total) % total],
-    ];
+    const preloadUrls = new Set<string>();
 
-    nearbyPrints.forEach((item) => {
-      item.images.forEach((src) => {
-        const lowQualityImage = new window.Image();
-        lowQualityImage.src = `/_next/image?url=${encodeURIComponent(src)}&w=${lowQualityWidth}&q=${lowQuality}`;
+    if (view === "grid") {
+      prints.slice(0, 6).forEach((item) => {
+        preloadUrls.add(
+          getOptimizedImageUrl(item.images[0], GRID_PRELOAD_WIDTH, THUMBNAIL_QUALITY)
+        );
       });
+    } else {
+      [0, 1, -1].forEach((offset) => {
+        const item = prints[(currentIndex + offset + total) % total];
+
+        item.images.forEach((src) => {
+          preloadUrls.add(getOptimizedImageUrl(src, BLUR_PRELOAD_WIDTH, 20));
+          preloadUrls.add(
+            getOptimizedImageUrl(src, VIEWER_PRELOAD_WIDTH, VIEWER_QUALITY)
+          );
+        });
+      });
+    }
+
+    preloadUrls.forEach((url) => {
+      const image = new window.Image();
+      image.src = url;
     });
-  }, [currentIndex, print, total]);
+  }, [currentIndex, total, view]);
 
   const goPrev = () => setCurrentIndex((i) => (i === 0 ? total - 1 : i - 1));
   const goNext = () => setCurrentIndex((i) => (i === total - 1 ? 0 : i + 1));
@@ -68,7 +88,9 @@ export default function PrintsPage() {
                 alt={p.title}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
-                loading="lazy"
+                loading={i < 6 ? "eager" : "lazy"}
+                preload={i < 2}
+                quality={THUMBNAIL_QUALITY}
                 style={{ objectFit: "cover" }}
               />
               <div className="prints-grid-overlay">
@@ -112,6 +134,8 @@ export default function PrintsPage() {
                     alt={`${print.title} — ${i + 1}`}
                     fill
                     sizes="(max-width: 768px) 50vw, 380px"
+                    loading="eager"
+                    quality={VIEWER_QUALITY}
                     style={{ objectFit: "cover" }}
                   />
                 </div>
@@ -128,7 +152,10 @@ export default function PrintsPage() {
                 width={1200}
                 height={900}
                 sizes="(max-width: 768px) 100vw, 780px"
-                priority={currentIndex === 0}
+                loading="eager"
+                preload
+                fetchPriority="high"
+                quality={VIEWER_QUALITY}
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>

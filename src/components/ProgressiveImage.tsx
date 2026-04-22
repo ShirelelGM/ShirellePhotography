@@ -12,9 +12,14 @@ type ProgressiveImageProps = Omit<
 
 const LOW_QUALITY_WIDTH = 32;
 const LOW_QUALITY = 20;
+const DEFAULT_QUALITY = 75;
+
+export function getOptimizedImageUrl(src: string, width: number, quality: number) {
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
+}
 
 function getBlurImageUrl(src: string) {
-  return `/_next/image?url=${encodeURIComponent(src)}&w=${LOW_QUALITY_WIDTH}&q=${LOW_QUALITY}`;
+  return getOptimizedImageUrl(src, LOW_QUALITY_WIDTH, LOW_QUALITY);
 }
 
 export function ProgressiveImage({
@@ -39,7 +44,7 @@ export function ProgressiveImage({
         .join(" ")}
       placeholder="blur"
       blurDataURL={getBlurImageUrl(src)}
-      quality={90}
+      quality={props.quality ?? DEFAULT_QUALITY}
       style={style}
       onLoad={onLoad}
     />
