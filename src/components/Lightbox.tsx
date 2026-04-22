@@ -24,7 +24,7 @@ export function Lightbox({ src, alt, onClose }: LightboxProps) {
 
   return (
     <div className="lightbox-overlay" onClick={onClose}>
-      <button className="lightbox-close" aria-label="Close">
+      <button className="lightbox-close" aria-label="Close" onClick={onClose}>
         ×
       </button>
       <div
@@ -35,8 +35,9 @@ export function Lightbox({ src, alt, onClose }: LightboxProps) {
           src={src}
           alt={alt}
           fill
+          className="lightbox-image"
           sizes="100vw"
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", objectPosition: "center" }}
         />
       </div>
     </div>

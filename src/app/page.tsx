@@ -18,10 +18,13 @@ export default function Home() {
       <div className="hero-content">
         <h1 className="hero-name">Shirelle GM</h1>
         <p className="hero-bio">
-          A visual storyteller capturing the raw beauty of the natural world.
-          Through the lens, I seek moments of wonder — from the quiet grace of
-          marine life to the vast, untamed landscapes that remind us how
-          extraordinary our planet truly is.
+          There is a quiet nostalgia in the most fleeting things: a sunset
+          dissolving into night, the wind moving across your face,
+          bioluminescence flickering in the vastness of the ocean. The most
+          beautiful moments in life never last, and no matter how deeply we
+          feel them, we cannot keep them. Through my lens, I try to preserve a
+          fragment of that beauty, not only what the world looked like, but
+          what it felt like to stand inside it.
         </p>
       </div>
     </section>

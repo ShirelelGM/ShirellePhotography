@@ -326,8 +326,21 @@ img {
 
 .prints-series {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
+}
+
+.prints-series--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.prints-series--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .prints-series--3 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .prints-series .prints-image-container {
@@ -444,6 +457,10 @@ img {
   cursor: default;
 }
 
+.lightbox-image {
+  object-position: center;
+}
+
 .lightbox-close {
   position: absolute;
   top: 12px;
@@ -479,7 +496,7 @@ img {
 
 @media (max-width: 480px) {
   .lightbox-image-wrapper {
-    inset: 8px;
+    inset: 56px 8px 12px;
   }
 
   .lightbox-close {

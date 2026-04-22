@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { prints } from "@/data/prints";
+import { ProgressiveImage } from "@/components/ProgressiveImage";
 import { InquiryModal } from "@/components/InquiryModal";
 import { Lightbox } from "@/components/Lightbox";
 
@@ -15,6 +15,23 @@ export default function PrintsPage() {
   const print = prints[currentIndex];
   const total = prints.length;
   const isSeries = print.images.length > 1;
+
+  useEffect(() => {
+    const lowQualityWidth = 32;
+    const lowQuality = 20;
+    const nearbyPrints = [
+      print,
+      prints[(currentIndex + 1) % total],
+      prints[(currentIndex - 1 + total) % total],
+    ];
+
+    nearbyPrints.forEach((item) => {
+      item.images.forEach((src) => {
+        const lowQualityImage = new window.Image();
+        lowQualityImage.src = `/_next/image?url=${encodeURIComponent(src)}&w=${lowQualityWidth}&q=${lowQuality}`;
+      });
+    });
+  }, [currentIndex, print, total]);
 
   const goPrev = () => setCurrentIndex((i) => (i === 0 ? total - 1 : i - 1));
   const goNext = () => setCurrentIndex((i) => (i === total - 1 ? 0 : i + 1));
@@ -46,11 +63,12 @@ export default function PrintsPage() {
               className="prints-grid-item"
               onClick={() => selectFromGrid(i)}
             >
-              <Image
+              <ProgressiveImage
                 src={p.images[0]}
                 alt={p.title}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
+                loading="lazy"
                 style={{ objectFit: "cover" }}
               />
               <div className="prints-grid-overlay">
@@ -80,14 +98,16 @@ export default function PrintsPage() {
           </button>
 
           {isSeries ? (
-            <div className="prints-series">
+            <div
+              className={`prints-series prints-series--${print.images.length}`}
+            >
               {print.images.map((img, i) => (
                 <div
                   key={i}
                   className="prints-image-container"
                   onClick={() => setLightboxSrc(img)}
                 >
-                  <Image
+                  <ProgressiveImage
                     src={img}
                     alt={`${print.title} — ${i + 1}`}
                     fill
@@ -102,7 +122,7 @@ export default function PrintsPage() {
               className="prints-image-container"
               onClick={() => setLightboxSrc(print.images[0])}
             >
-              <Image
+              <ProgressiveImage
                 src={print.images[0]}
                 alt={print.title}
                 width={1200}
